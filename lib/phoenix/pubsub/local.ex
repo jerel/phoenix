@@ -16,8 +16,8 @@ defmodule Phoenix.PubSub.Local do
     * `server_name` - The name to register the server under
 
   """
-  def start_link(server_name, gc_name) do
-    GenServer.start_link(__MODULE__, {server_name, gc_name}, name: server_name)
+  def start_link(server_name, local_name, gc_name) do
+    GenServer.start_link(__MODULE__, {server_name, local_name, gc_name}, name: server_name)
   end
 
   @doc """
@@ -36,7 +36,8 @@ defmodule Phoenix.PubSub.Local do
 
   """
   def subscribe(local_server, pid, topic, opts \\ []) when is_atom(local_server) do
-    :ok = GenServer.call(local_server, {:subscribe, pid, opts[:link]})
+    local_pool_server  = String.to_atom("#{local_server}#{Enum.random(1..20)}")
+    :ok = GenServer.call(local_pool_server, {:subscribe, pid, opts[:link]})
     true = :ets.insert(local_server, {topic, {pid, opts[:fastlane]}})
     :ok
   end
@@ -143,9 +144,7 @@ defmodule Phoenix.PubSub.Local do
     |> Enum.uniq
   end
 
-  def init({local, gc}) do
-    ^local = :ets.new(local, [:bag, :named_table, :public,
-                              read_concurrency: true, write_concurrency: true])
+  def init({_server_name, _local, gc}) do
     Process.flag(:trap_exit, true)
     {:ok, gc}
   end

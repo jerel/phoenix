@@ -6,9 +6,11 @@ defmodule Phoenix.LocalTest do
 
   setup config do
     local = :"#{config.test}_local"
-    gc    = :"#{config.test}_gc"
-    {:ok, _} = Local.start_link(local, gc)
-    {:ok, _} = GC.start_link(gc, local)
+    local_name = :"#{config.test}_local_1"
+    gc = :"#{config.test}_gc_1"
+    gc_name = :"#{config.test}_gc_1"
+    {:ok, _} = Local.start_link(local_name, local, gc)
+    {:ok, _} = GC.start_link(gc_name, local)
     {:ok, local: local, gc: gc}
   end
 

@@ -31,7 +31,8 @@ defmodule Phoenix.PubSub.GC do
 
   """
   def unsubscribe(gc_server, pid, topic) when is_atom(gc_server) do
-    GenServer.call(gc_server, {:unsubscribe, pid, topic})
+    gc_pool_server = String.to_atom("#{gc_server}#{Enum.random(1..20)}")
+    GenServer.call(gc_pool_server, {:unsubscribe, pid, topic})
   end
 
   @doc """
@@ -47,7 +48,8 @@ defmodule Phoenix.PubSub.GC do
 
   """
   def down(gc_server, pid) when is_atom(gc_server) do
-    GenServer.cast(gc_server, {:down, pid})
+    gc_pool_server = String.to_atom("#{gc_server}#{Enum.random(1..20)}")
+    GenServer.cast(gc_pool_server, {:down, pid})
   end
 
   def handle_call({:unsubscribe, pid, topic}, _from, state) do

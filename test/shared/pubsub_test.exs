@@ -35,6 +35,7 @@ defmodule Phoenix.PubSubTest do
     adapter = Application.get_env(:phoenix, :pubsub_test_adapter)
     {:ok, _} = adapter.start_link(config.test, [])
     {:ok, local: Module.concat(config.test, Elixir.Local),
+          local_pool: Module.concat(config.test, Elixir.Local1),
           gc: Module.concat(config.test, Elixir.GC)}
   end
 
@@ -49,7 +50,7 @@ defmodule Phoenix.PubSubTest do
 
   test "subscribe/3 with link does not down adapter", config do
     pid   = spawn_pid()
-    local = Process.whereis(config.local)
+    local = Process.whereis(config.local_pool)
     assert PubSub.subscribe(config.test, pid, "topic4", link: true)
 
     kill_and_wait(pid)

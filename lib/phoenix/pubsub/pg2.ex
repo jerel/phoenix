@@ -32,9 +32,21 @@ defmodule Phoenix.PubSub.PG2 do
     true = :ets.insert(server_name, {:subscribe, Phoenix.PubSub.Local, [local_name]})
     true = :ets.insert(server_name, {:unsubscribe, Phoenix.PubSub.GC, [gc_name]})
 
-    children = [
-      worker(Phoenix.PubSub.Local, [local_name, gc_name]),
-      worker(Phoenix.PubSub.GC, [gc_name, local_name]),
+    ^local_name = :ets.new(local_name, [:bag, :named_table, :public,
+                           read_concurrency: true, write_concurrency: true])
+    locals =
+      for i <- 1..20 do
+        server_name = String.to_atom("#{local_name}#{i}")
+        worker(Phoenix.PubSub.Local, [server_name, local_name, gc_name], id: server_name)
+      end
+
+    gcs =
+      for i <- 1..20 do
+        server_name = String.to_atom("#{gc_name}#{i}")
+        worker(Phoenix.PubSub.GC, [server_name, local_name], id: server_name)
+      end
+
+    children = locals ++ gcs ++ [
       worker(Phoenix.PubSub.PG2Server, [server_name, local_name]),
     ]
 
