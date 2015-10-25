@@ -36,6 +36,7 @@ defmodule Phoenix.PubSub.Local do
 
   """
   def subscribe(local_server, pid, topic, opts \\ []) when is_atom(local_server) do
+    :random.seed(:os.timestamp)
     local_pool_server  = String.to_atom("#{local_server}#{Enum.random(1..20)}")
     :ok = GenServer.call(local_pool_server, {:subscribe, pid, opts[:link]})
     true = :ets.insert(local_server, {topic, {pid, opts[:fastlane]}})

@@ -31,6 +31,7 @@ defmodule Phoenix.PubSub.GC do
 
   """
   def unsubscribe(gc_server, pid, topic) when is_atom(gc_server) do
+    :random.seed(:os.timestamp)
     gc_pool_server = String.to_atom("#{gc_server}#{Enum.random(1..20)}")
     GenServer.call(gc_pool_server, {:unsubscribe, pid, topic})
   end
@@ -48,6 +49,7 @@ defmodule Phoenix.PubSub.GC do
 
   """
   def down(gc_server, pid) when is_atom(gc_server) do
+    :random.seed(:os.timestamp)
     gc_pool_server = String.to_atom("#{gc_server}#{Enum.random(1..20)}")
     GenServer.cast(gc_pool_server, {:down, pid})
   end
