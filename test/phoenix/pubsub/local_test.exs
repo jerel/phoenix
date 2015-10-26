@@ -2,11 +2,15 @@ defmodule Phoenix.LocalTest do
   use ExUnit.Case, async: true
 
   alias Phoenix.PubSub.Local
+  alias Phoenix.PubSub.GC
 
   setup config do
     local = :"#{config.test}_local"
-    {:ok, _} = Local.start_link(local)
-    {:ok, local: local}
+    pids = :"#{config.test}_local_pids"
+    gc    = :"#{config.test}_gc"
+    {:ok, _} = Local.start_link(local, pids, gc)
+    {:ok, _} = GC.start_link(gc, local, pids)
+    {:ok, local: local, gc: gc}
   end
 
   test "subscribe/2 joins a pid to a topic and broadcast/2 sends messages", config do
