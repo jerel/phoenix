@@ -1,4 +1,5 @@
-import assert from "assert"
+import {describe, before, it} from "mocha"
+import expect from "expect.js"
 
 import {Presence} from "../static/js/phoenix"
 
@@ -23,7 +24,7 @@ describe("syncState", () => {
     let newState = {u1: {metas: [{id: 1, phx_ref: "1"}]}}
     let state = {}
     Presence.syncState(state, newState)
-    assert.deepEqual(state, newState)
+    expect(state).to.eql(newState)
   })
 
   it("onJoins new presences and onLeave's left presences", () => {
@@ -38,13 +39,13 @@ describe("syncState", () => {
       left[key] = {current: current, leftPres: leftPres}
     }
     Presence.syncState(state, newState, onJoin, onLeave)
-    assert.deepEqual(state, newState)
-    assert.deepEqual(joined, {
-      u1: {current: null, newPres: {metas: [{id: 1, phx_ref: "1"}]}},
-      u2: {current: null, newPres: {metas: [{id: 2, phx_ref: "2"}]}},
-      u3: {current: null, newPres: {metas: [{id: 3, phx_ref: "3"}]}}
+    expect(state).to.eql(newState)
+    expect(joined).to.eql({
+      u1: {current: undefined, newPres: {metas: [{id: 1, phx_ref: "1"}]}},
+      u2: {current: undefined, newPres: {metas: [{id: 2, phx_ref: "2"}]}},
+      u3: {current: undefined, newPres: {metas: [{id: 3, phx_ref: "3"}]}}
     })
-    assert.deepEqual(left, {
+    expect(left).to.eql({
       u4: {current: {metas: []}, leftPres: {metas: [{id: 4, phx_ref: "4"}]}}
     })
   })
@@ -61,12 +62,12 @@ describe("syncState", () => {
       left[key] = {current: current, leftPres: leftPres}
     }
     Presence.syncState(state, newState, onJoin, onLeave)
-    assert.deepEqual(state, newState)
-    assert.deepEqual(joined, {
+    expect(state).to.eql(newState)
+    expect(joined).to.eql({
       u3: {current: {metas: [{id: 3, phx_ref: "3"}]},
            newPres: {metas: [{id: 3, phx_ref: "3"}, {id: 3, phx_ref: "3.new"}]}}
     })
-    assert.deepEqual(left, {})
+    expect(left).to.be.empty()
   })
 })
 
@@ -78,14 +79,14 @@ describe("syncDiff", () => {
       joins: joins,
       leaves: {}
     })
-    assert.deepEqual(state, joins)
+    expect(state).to.eql(joins)
   })
 
   it("removes presence when meta is empty and adds additional meta", () => {
     let state = fixtures.state()
     Presence.syncDiff(state, {joins: fixtures.joins(), leaves: fixtures.leaves()})
 
-    assert.deepEqual(state, {
+    expect(state).to.eql({
       u1: {metas: [{id: 1, phx_ref: "1"}, {id: 1, phx_ref: "1.2"}]},
       u3: {metas: [{id: 3, phx_ref: "3"}]}
     })
@@ -97,7 +98,7 @@ describe("syncDiff", () => {
     }
     Presence.syncDiff(state, {joins: {}, leaves: {u1: {metas: [{id: 1, phx_ref: "1"}]}}})
 
-    assert.deepEqual(state, {
+    expect(state).to.eql({
       u1: {metas: [{id: 1, phx_ref: "1.2"}]},
     })
   })
@@ -107,7 +108,7 @@ describe("syncDiff", () => {
 describe("list", () => {
   it("lists full presence by default", () => {
     let state = fixtures.state()
-    assert.deepEqual(Presence.list(state), [
+    expect(Presence.list(state)).to.eql([
       {metas: [{id: 1, phx_ref: "1"}]},
       {metas: [{id: 2, phx_ref: "2"}]},
       {metas: [{id: 3, phx_ref: "3"}]}
@@ -124,7 +125,7 @@ describe("list", () => {
       return first
     }
 
-    assert.deepEqual(Presence.list(state, listBy), [
+    expect(Presence.list(state, listBy)).to.eql([
       {id: 1, phx_ref: "1.first"}
     ])
   })

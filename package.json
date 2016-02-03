@@ -8,10 +8,18 @@
     "brunch": "~2.2.3",
     "mocha": "~2.4.4",
     "babel-brunch": "~6.0.0",
-    "uglify-js-brunch": "~2.0.1"
+    "uglify-js-brunch": "~2.0.1",
+    "babel-preset-es2015": "~6.3.13",
+    "babel-register": "~6.4.3",
+    "glob": "~6.0.4",
+    "rollup": "~0.25.2",
+    "testem": "~0.9.6",
+    "saucie": "~1.2.0"
   },
   "files": ["LICENSE.md", "package.json", "priv/static/phoenix.js"],
   "scripts": {
-    "test": "./node_modules/.bin/mocha ./web/test/**/*.js --compilers js:babel-register"
+    "test": "./node_modules/.bin/mocha ./web/test/**/*_test.js --compilers js:babel-register",
+    "testem": "./node_modules/.bin/testem",
+    "testem-ci": "./node_modules/.bin/testem ci --host phoenix-server.dev --port 8080"
   }
 }

@@ -1,0 +1,29 @@
+
+<!doctype html>
+<html>
+<head>
+  <title>Test'em</title>
+  <link rel="stylesheet" href="/testem/mocha.css">
+  <script src="/testem/mocha.js"></script>
+  <script src="/testem.js"></script>
+
+  <script src="/web/test/testem/require.js"></script>
+  <script src="/web/test/testem/babel-polyfill.js"></script>
+  <script src="/web/test/testem/expect.js"></script>
+  <script src="/web/test/testem/shim.js"></script>
+</head>
+<body>
+  <div id="mocha"></div>
+  <script>
+    mocha.setup('bdd');
+    requirejs([
+      {{#serve_files}}
+        '{{{src}}}'.replace('web/test/testem/', ''),
+      {{/serve_files}}
+    ], function() {
+      mocha.run()
+    });
+  </script>
+</body>
+</html>
+
