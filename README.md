@@ -5,6 +5,8 @@
 [![Build Status](https://api.travis-ci.org/phoenixframework/phoenix.svg)](https://travis-ci.org/phoenixframework/phoenix)
 [![Inline docs](http://inch-ci.org/github/phoenixframework/phoenix.svg)](http://inch-ci.org/github/phoenixframework/phoenix)
 
+[![Sauce Test Status](https://saucelabs.com/browser-matrix/aNTaTe.svg)](https://saucelabs.com/u/aNTaTe)
+
 ## Getting started
 
 See the official site at http://www.phoenixframework.org/

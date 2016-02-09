@@ -22,9 +22,18 @@ glob('./web/test/**/*_test.js', function(err, tests) {
         dest: dest,
       }).then(function() {
         babel.transformFile(dest, {sourceMaps: 'inline'}, function(err, result) {
+          if (err) {
+            // write transpile errors to console
+            console.log(err);
+          }
           fs.writeFile(dest, result.code);
         });
+      }).catch(function(error) {
+        // write import errors to console
+        console.log(error);
       });
+    }).catch(function(error) {
+      console.log(error);
     });
   });
 

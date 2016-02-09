@@ -19,7 +19,7 @@ let fixtures = {
   }
 }
 
-describe("syncState", () => {
+describe("unit:syncState", () => {
   it("syncs empty state", () => {
     let newState = {u1: {metas: [{id: 1, phx_ref: "1"}]}}
     let state = {}
@@ -71,7 +71,7 @@ describe("syncState", () => {
   })
 })
 
-describe("syncDiff", () => {
+describe("unit:syncDiff", () => {
   it("syncs empty state", () => {
     let joins = {u1: {metas: [{id: 1, phx_ref: "1"}]}}
     let state = {}
@@ -105,7 +105,7 @@ describe("syncDiff", () => {
 })
 
 
-describe("list", () => {
+describe("unit:list", () => {
   it("lists full presence by default", () => {
     let state = fixtures.state()
     expect(Presence.list(state)).to.eql([
