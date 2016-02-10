@@ -702,8 +702,8 @@ export class Ajax {
   }
 
   static xdomainRequest(req, method, endPoint, body, timeout, ontimeout, callback){
-    req.timeout = timeout
     req.open(method, endPoint)
+    req.timeout = timeout
     req.onload = () => {
       let response = this.parseJSON(req.responseText)
       callback && callback(response)
@@ -717,8 +717,8 @@ export class Ajax {
   }
 
   static xhrRequest(req, method, endPoint, accept, body, timeout, ontimeout, callback){
-    req.timeout = timeout
     req.open(method, endPoint, true)
+    req.timeout = timeout
     req.setRequestHeader("Content-Type", accept)
     req.onerror = () => { callback && callback(null) }
     req.onreadystatechange = () => {
