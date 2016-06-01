@@ -14,7 +14,7 @@
     "babel-core": "~6.5.1",
     "glob": "~6.0.4",
     "rollup": "~0.25.2",
-    "testem": "~1.2.2",
+    "testem": "~1.8.0",
     "saucie": "~1.4.0"
   },
   "files": ["LICENSE.md", "package.json", "priv/static/phoenix.js"],

@@ -6,6 +6,7 @@ otp_release:
   - 18.0
 sudo: false
 before_script:
+  - nvm install node
   - mix deps.get --only test
 script:
   - mix test
